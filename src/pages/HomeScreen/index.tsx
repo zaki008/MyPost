@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }: IProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   const [email, setEmail] = useState('');
-  const [refreshing, setIsRefreshing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const getDataLocal = async () => {
     try {
@@ -50,6 +50,7 @@ const HomeScreen = ({ navigation }: IProps) => {
     } catch (err) {
       console.error('Error fetching posts:', err);
     } finally {
+      setIsRefreshing(false);
       setIsLoading(false);
     }
   };
@@ -69,7 +70,7 @@ const HomeScreen = ({ navigation }: IProps) => {
   };
 
   const onRefresh = () => {
-    setIsLoading(true);
+    setIsRefreshing(true);
     setPosts([]);
     getDataPost();
   };
@@ -79,7 +80,7 @@ const HomeScreen = ({ navigation }: IProps) => {
       <HeaderHome title="MyPost" email={email} onLogout={handleLogout} />
       <View style={[$styles.flex1, $spacingStyles.pLg]}>
         <TitleSection title={'List Post'} />
-        {isLoading ? (
+        {isLoading || isRefreshing ? (
           <LoadingIndicator />
         ) : (
           <FlatList
@@ -96,7 +97,7 @@ const HomeScreen = ({ navigation }: IProps) => {
             )}
             contentContainerStyle={$spacingStyles.pbXxl}
             ListEmptyComponent={() => <NotFound />}
-            refreshing={refreshing}
+            refreshing={isRefreshing}
             onRefresh={onRefresh}
           />
         )}
