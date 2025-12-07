@@ -7,9 +7,10 @@ import { $spacingStyles } from '../../theme/spacing';
 interface IProps {
   control: Control<any>;
   onSubmit: (params?: any) => void;
+  loading: boolean;
 }
 
-const LoginForm = ({ control, onSubmit }: IProps) => {
+const LoginForm = ({ control, onSubmit, loading }: IProps) => {
   return (
     <View>
       <RHFTextInput
@@ -40,6 +41,8 @@ const LoginForm = ({ control, onSubmit }: IProps) => {
         stylesContainer={$spacingStyles.mtLg}
         title="Submit"
         onPress={onSubmit}
+        disabled={loading}
+        loading={loading}
       />
     </View>
   );

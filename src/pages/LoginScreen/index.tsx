@@ -11,6 +11,7 @@ import { generateJWTByEmail } from '../../utils/storage/jwtHelper';
 import { storeData } from '../../utils/storage';
 import { AlertShow } from '../../utils/AllertShow';
 import { NavigationProp } from '@react-navigation/native';
+import { useState } from 'react';
 
 interface IProps {
   navigation: NavigationProp<any>;
@@ -29,14 +30,19 @@ const LoginScreen = ({ navigation }: IProps) => {
     },
   });
 
+  const [isLoading, setIsLloading] = useState(false);
+
   const onSubmit = async (data: LoginParams) => {
     try {
+      setIsLloading(true);
       const token = generateJWTByEmail(data.email);
       await storeData('token', token);
       AlertShow('Login is Successfully', 'success');
       navigation.navigate('HomeScreen');
     } catch (err) {
       AlertShow('Login is Failed', 'danger');
+    } finally {
+      setIsLloading(false);
     }
   };
 
@@ -48,7 +54,11 @@ const LoginScreen = ({ navigation }: IProps) => {
           <Text style={[$typographyVariants.bold.xxxl, $spacingStyles.myLg]}>
             Login Screen
           </Text>
-          <LoginForm control={control} onSubmit={handleSubmit(onSubmit)} />
+          <LoginForm
+            control={control}
+            onSubmit={handleSubmit(onSubmit)}
+            loading={isLoading}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
