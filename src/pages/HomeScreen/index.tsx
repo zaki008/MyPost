@@ -19,7 +19,7 @@ interface IProps {
   navigation: NavigationProp<any>;
 }
 
-interface Post {
+export interface Post {
   userId: number;
   id: number;
   title: string;
@@ -86,7 +86,13 @@ const HomeScreen = ({ navigation }: IProps) => {
             data={posts}
             keyExtractor={item => item.id.toString()}
             renderItem={({ item }) => (
-              <CardPost title={item.title} desc={item.body} />
+              <CardPost
+                title={item.title}
+                desc={item.body}
+                onPress={() =>
+                  navigation.navigate('DetailPost', { id: item.id })
+                }
+              />
             )}
             contentContainerStyle={$spacingStyles.pbXxl}
             ListEmptyComponent={() => <NotFound />}

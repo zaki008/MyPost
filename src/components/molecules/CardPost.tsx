@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { $typographyVariants } from '../../theme/fontSize';
 import { colors } from '../../theme/colors';
 import { $spacingStyles } from '../../theme/spacing';
@@ -8,11 +8,14 @@ import { $styles } from '../../theme/styles';
 interface IProps {
   title: string;
   desc: string;
+  onPress?: (params?: any) => void;
+  type?: 'list' | 'detail';
 }
 
-const CardPost = ({ title, desc }: IProps) => {
+const CardPost = ({ title, desc, onPress, type = 'list' }: IProps) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={[
         styles.container,
         $spacingStyles.pLg,
@@ -26,8 +29,9 @@ const CardPost = ({ title, desc }: IProps) => {
           $spacingStyles.mbSm,
           { color: colors.black01 },
         ]}
-        numberOfLines={1}
-        ellipsizeMode="tail"
+        {...(type === 'list'
+          ? { numberOfLines: 1, ellipsizeMode: 'tail' }
+          : {})}
       >
         {title}
       </Text>
@@ -36,12 +40,13 @@ const CardPost = ({ title, desc }: IProps) => {
           $typographyVariants.medium.md,
           { color: colors.black01, opacity: 0.8 },
         ]}
-        numberOfLines={3}
-        ellipsizeMode="tail"
+        {...(type === 'list'
+          ? { numberOfLines: 3, ellipsizeMode: 'tail' }
+          : {})}
       >
         {desc}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -11,3 +11,13 @@ export const getPosts = async () => {
     throw error;
   }
 };
+
+export const getPostById = async (id : number | string) => {
+  try {
+    const response = await axios.get(`${BASE_URL_API}/posts/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
